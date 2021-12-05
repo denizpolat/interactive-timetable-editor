@@ -55,3 +55,32 @@ class Section(models.Model):
 
     def __str__(self):
         return str(str(self.course) + ' - ' + str(self.current_section))
+
+class Event(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    course = models.ForeignKey(Section.course, on delete=models.CASCADE)
+    section = models.ForeignKey(Section.current_section, on_delete=models.CASCADE)
+    length = models.IntegerField('length')
+    description = models.CharField('description')
+
+    def __str__(self):
+        return str('event id : ' + str(self.id) + '\n' + 'section id : ' + str(self.section))
+
+class Day(models.Model):
+    DAY_NAMES = (
+        ('M', 'Monday'),
+        ('T', 'Tuesday'),
+        ('W', 'Wednesday'),
+        ('Th', 'Thursday'),
+        ('F', 'Friday'),
+    )
+    name = models.CharField(max_length=2, choices=DAY_NAMES)
+
+class TimeTable(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    days = models.ManyToManyField(Day.name, related_name='day_names', blank=False)
+    starting_slot_perday = models.IntegerField('day_start')
+    ending_slot_perday = models.IntegerField('day_end')
+    slot_offset = models.IntegerField('slot_offset', default=40)
+    events = models.ManyToManyField(Event.id, related_name='event_ids', blank=False)
+    rooms = models.ManyToManyField(Room.id, related_name='rooms_ids', blank=False)
