@@ -1,3 +1,6 @@
+global sections
+sections = []
+
 class Section():
     course_id = 0
     curr_section = 0
@@ -7,18 +10,19 @@ class Section():
     student_list = []
 
     def __init__(self, course_id, curr_section, tot_section, desc, instructor_id):
-        self.course_id = course
+        self.course_id = course_id
         self.curr_section = curr_section
         self.tot_section = tot_section
         self.desc = desc
         self.instructor_id = instructor_id
+        sections.append(self)
 
-    def addStudent(stlist):
+    def addStudent(self, stlist):
         for student in stlist:
-            if student not in student_list:
-                student_list.append(student)
+            if student not in self.student_list:
+                self.student_list.append(student)
 
-    def removeStudent(stlist):
+    def removeStudent(self, stlist):
         for student in stlist:
-            if student in student_list:
-                student_list.remove(student)
+            if student in self.student_list:
+                self.student_list.remove(student)

@@ -1,3 +1,4 @@
+global instructors, students
 std_ids = []
 students = []
 instructors = []
