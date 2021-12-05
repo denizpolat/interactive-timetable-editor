@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 from django.shortcuts import render
 from django.http import JsonResponse, HttpResponseRedirect, HttpResponse, HttpResponseForbidden
 from django.views.generic import View
-from . import forms
+from forms import *
 from django.contrib import messages
 from django.shortcuts import render, redirect
 
