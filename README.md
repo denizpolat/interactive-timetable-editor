@@ -1,5 +1,7 @@
 # interactive-timetable-editor
 
+Interactive Timetable Editor
+
 Deniz Polat - 2237790
 Deniz Turan Çağlarca -2237154
 
