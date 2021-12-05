@@ -72,3 +72,11 @@ def removeStudent(id):
 def removeStudents(ids):
     for id in ids:
         removeStudent(id)
+
+
+def getInstructorName(id):
+    for i in instructors:
+        if i.id == id:
+            return i.name
+    return ""
+

@@ -100,18 +100,29 @@ class TimeTable():
 
     def getInstConflicts(self):
         eventct = len(self.event_list)
+        result = []
         for event1 in self.event_list:
             for event2 in self.event_list:
                 conf_timeslot = does_have_time_conflict(event1, event2)
                 if conf_timeslot != -1:
+                    inst1 = -1
+                    inst2 = -1
                     for sect in section.sections:
-                        if sect.curr_section ==
+                        if inst1 != -1 and inst2 != -1:
+                            break
+                        if sect.curr_section == event1.section and sect.course_id == event1.course_id:
+                            inst1 = sect.instructor_id
+                            continue
+                        if sect.curr_section == event2.section and sect.course_id == event2.course_id:
+                            inst2 = sect.instructor_id
+                            continue
+                    if inst1 == inst2:
+                        result.append((people.getInstructorName(inst1), conf_timeslot, [event1, event2]))
+        return result
 
-
-
-
-
-
+    def getConflicts(self):
+        roomConf = self.getRoomConflicts()
+        instConf = self.getInstConflicts()
 
 
     def assign(self, timeslot, event):
