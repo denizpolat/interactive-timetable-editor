@@ -4,6 +4,9 @@ from __future__ import unicode_literals
 from django.shortcuts import render
 from django.http import JsonResponse, HttpResponseRedirect, HttpResponse, HttpResponseForbidden
 from django.views.generic import View
+from . import forms
+from django.contrib import messages
+from django.shortcuts import render, redirect
 
 from models import *
 
@@ -66,4 +69,23 @@ from models import *
 #         return render(request, 'deployment_app/index.html', {})
 
 
+def removeStudent(idlist):
+    students = Student.objects.all()
+    deleteStudents = []
+    for id_ in idlist:
+        deleteStudents.append(students.get(id=id_))
+    deleteStudents.delete()
 
+def CourseView(request):
+    course = forms.CourseForm()
+    courses = Course.objects.all()
+    context = {'course': course, 'courses': courses}
+    if request.method == 'POST':
+        course = forms.CourseForm(request.POST)
+        if course.is_valid():
+            messages.success(request, 'Class has been added.')
+            course.save()
+            return redirect('/add-classcourse')    # add
+        else:
+            messages.error(request, 'Do not enter the same class ID')
+    return render(request, 'timetableapp/AddClass.html', context)

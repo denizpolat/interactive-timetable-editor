@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.core.validators import RegexValidator
 
 
-class CourseForm:
+class CourseForm(forms.ModelForm):
     course_code = forms.IntegerField(required=True)
     course_name = forms.CharField(required=True)
 
@@ -13,7 +13,7 @@ class CourseForm:
         fields = ('course_code', 'course_name')
 
 
-class RoomForm:
+class RoomForm(forms.ModelForm):
     capacity = forms.IntegerField(required=True)
     description = forms.CharField(required=False)
 
