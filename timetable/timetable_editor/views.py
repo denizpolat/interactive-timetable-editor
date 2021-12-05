@@ -4,8 +4,8 @@ from __future__ import unicode_literals
 from django.shortcuts import render
 from django.http import JsonResponse, HttpResponseRedirect, HttpResponse, HttpResponseForbidden
 from django.views.generic import View
-from forms import *
-from models import *
+from timetable_editor.forms import *
+from timetable_editor.models import *
 from django.contrib import messages
 from django.shortcuts import render, redirect
 
@@ -67,7 +67,6 @@ from django.shortcuts import render, redirect
 #
 #         return render(request, 'deployment_app/index.html', {})
 
-
 def removeStudent(idlist):
     students = Student.objects.all()
     deleteStudents = []
@@ -75,7 +74,10 @@ def removeStudent(idlist):
         deleteStudents.append(students.get(id=id_))
     deleteStudents.delete()
 
-def CourseView(request):
+
+
+
+def CoursesView(request):
     course = forms.CourseForm()
     courses = Course.objects.all()
     context = {'course': course, 'courses': courses}
@@ -87,4 +89,4 @@ def CourseView(request):
             return redirect('/add-classcourse')    # add
         else:
             messages.error(request, 'Do not enter the same class ID')
-    return render(request, 'timetableapp/AddClass.html', context)
+    # return render(request, 'timetable/AddClass.html', context)
