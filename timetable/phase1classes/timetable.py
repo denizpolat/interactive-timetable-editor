@@ -123,6 +123,7 @@ class TimeTable():
     def getConflicts(self):
         roomConf = self.getRoomConflicts()
         instConf = self.getInstConflicts()
+        return roomConf + instConf
 
 
     def assign(self, timeslot, event):
