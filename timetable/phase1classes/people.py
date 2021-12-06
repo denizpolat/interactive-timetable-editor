@@ -34,7 +34,7 @@ class Instructor:
 
 """
 Currently unused helper functions. 
-
+"""
 def addStudent(id, name, ct):
     if id in std_ids:
         print("You cannot add a std with this id")
@@ -79,4 +79,3 @@ def getInstructorName(id):
         if i.id == id:
             return i.name
     return ""
-""" 
