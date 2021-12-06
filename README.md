@@ -5,7 +5,7 @@ Interactive Timetable Editor
 Deniz Polat - 2237790
 Deniz Turan Çağlarca -2237154
 
-For phase1, we have 4 files namely people.py, rooms.py, section.py, timetable.py
+For phase1, we have 4 files namely people.py, rooms.py, section.py, timetable.py (timetable/phase1classes)
 
 people.py is responsible for class definitions of Student, Instructor and Course,
 rooms.py is responsible for class definitions of Room and RoomList,
