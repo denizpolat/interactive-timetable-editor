@@ -1,4 +1,3 @@
-global instructors, students
 std_ids = []
 students = []
 instructors = []
@@ -12,7 +11,6 @@ class Course:
     def __init__(self, cc, cn):
         self.course_code = cc
         self.course_name = cn
-        courses.append(self)
 
 class Student:
     id = 0
@@ -51,6 +49,8 @@ def addInstructor(id, name, cg):
         s = Instructor(id, name, cg)
         instructors.append(s)
 
+"""
+Currently unused helper functions. 
 
 def getStudents():
     return students
@@ -79,4 +79,4 @@ def getInstructorName(id):
         if i.id == id:
             return i.name
     return ""
-
+""" 
