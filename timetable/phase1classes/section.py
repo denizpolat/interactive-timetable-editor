@@ -1,6 +1,3 @@
-global sections
-sections = []
-
 class Section():
     course_id = 0
     curr_section = 0
@@ -15,7 +12,6 @@ class Section():
         self.tot_section = tot_section
         self.desc = desc
         self.instructor_id = instructor_id
-        sections.append(self)
 
     def addStudent(self, stlist):
         for student in stlist:
