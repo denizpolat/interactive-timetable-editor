@@ -32,6 +32,9 @@ class Instructor:
         self.courses_given = courses_given
 
 
+"""
+Currently unused helper functions. 
+
 def addStudent(id, name, ct):
     if id in std_ids:
         print("You cannot add a std with this id")
@@ -48,9 +51,6 @@ def addInstructor(id, name, cg):
         inst_ids.append(id)
         s = Instructor(id, name, cg)
         instructors.append(s)
-
-"""
-Currently unused helper functions. 
 
 def getStudents():
     return students
