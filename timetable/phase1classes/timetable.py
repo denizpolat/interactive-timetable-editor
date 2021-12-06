@@ -2,7 +2,6 @@ import people
 import rooms
 import section
 
-global event_id
 event_id = 0
 
 def does_have_time_conflict(event1, event2):
@@ -30,6 +29,7 @@ class Event():
     day = ""
 
     def __init__(self, section, length, description, day, course_id):
+        global event_id
         self.section = section
         self.length = length
         self.description = description
@@ -58,7 +58,7 @@ class TimeTable():
         self.slot_offset = slot_offset
 
     def addEvents(self, eventlist):
-        event_ids = [evt.id for evt in self.event_list]
+        event_ids = [evt for evt in self.event_list]
         for event in eventlist:
             if event.id not in event_ids:
                 self.event_list.append(event)
@@ -138,4 +138,4 @@ class TimeTable():
         return events
 
     def updateView(self):
-        return 
+        return
