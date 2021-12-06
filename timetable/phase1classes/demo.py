@@ -4,6 +4,7 @@ from rooms import *
 from section import *
 from timetable import *
 
+"""Variables to hold all creates instances"""
 rooms = []
 roomlist = []
 sections = []
@@ -29,7 +30,7 @@ class TimeTableDemo(cmd.Cmd):
         for room in rooms:
             if room.id == int(update_arg[0]):
                 room.updateCapacity(int(update_arg[1]))
-                room.updateDescription(int(update_arg[2]))
+                room.updateDescription(update_arg[2])
 
     def do_createRoomList(self, arg):
         'Create a roomlist (no argument)'
@@ -58,46 +59,61 @@ class TimeTableDemo(cmd.Cmd):
         'Show a list of Rooms and their ids, capacities and descriptions (no argument)'
         global rooms
         for room in rooms:
-            print('Room id:', room.id, '- Room capacity:',room.capacity,'- Room desc:', room.desciption)
+            print('Room id:', room.id, '- Room capacity:',room.capacity,'- Room desc:', room.description)
 
     def do_showRoomLists(self, arg):
         'Show a list of Roomlists and the RoomIds they contain (no argument)'
         global roomlist
         for roomls in roomlist:
-            print('Roomlist id:', roomls.id, '- Contained Rooms: ' end=' ')
+            print('Roomlist id:', roomls.id, '- Contained Rooms:', end=' ')
             for rooms in roomls.rooms:
-                print(room.id, end=' ')
+                print(rooms, end=' ')
             print()
 
     def do_createSection(self, arg):
         'Create a section with arguments: CourseId(int) CurrentSection(int) TotalSections(int) Description(string) InstructorId(int)'
         global sections
         sections_args = arg.split()
-        new_section = Section(int(arg[0]), int(arg[1]), int(arg[2]), arg[3], int(arg[4]))
+        new_section = Section(int(sections_args[0]), int(sections_args[1]), int(sections_args[2]), sections_args[3], int(sections_args[4]))
         sections.append(new_section)
+
+    def do_showSections(self, arg):
+        'Show a list of sections with their courseId section description instructorId and studentIds in that section (no arguments)'
+        global sections
+        for section in sections:
+            print('CourseId:',section.course_id,'- Section:',section.curr_section,'- Description',section.desc,'- InstructorId:',section.instructor_id,'- Students: ',end=' ')
+            for students in section.student_list:
+                print(students,end=" ")
+            print()
 
     def do_createCourse(self, arg):
         'Create a course with arguments: CourseCode(int) CourseName(string)'
         global courses
         courses_arg = arg.split()
+        new_course = Course(int(courses_arg[0]), courses_arg[1])
         course_codes = [crs.course_code for crs in courses]
         if int(courses_arg[0]) in course_codes:
             print('Can\'t add course with this course code.')
         else:
-            new_course = Course(int(courses_arg[0]), courses_arg[1])
-            courses.append = new_course
+            courses.append(new_course)
+
+    def do_showCourses(self, arg):
+        'Show a list of courses with their codes and names (no argument)'
+        global courses
+        for course in courses:
+            print('Course Code:',course.course_code,'- Course Name:', course.course_name)
 
     def do_createStudent(self, arg):
         'Create a student with arguments: StudentId(int) StudentName(string) CourseId1(int) CourseId2(int)...'
         global std_ids
-        global students
         student_args = arg.split()
         if int(student_args[0]) in std_ids:
             print("You cannot add a student with this id.")
         else:
+            global students
             std_ids.append(int(student_args[0]))
             courses = []
-            for courseId in students_args[2:]:
+            for courseId in student_args[2:]:
                 courses.append(int(courseId))
             student = Student(int(student_args[0]), student_args[0], courses)
             students.append(student)
@@ -120,13 +136,13 @@ class TimeTableDemo(cmd.Cmd):
     def do_addStudent(self, arg):
         'Add students to a section with arguments: CourseId(int) Section(int) StudentId1(int) StudentId2(int)...'
         global sections
-        sections_args = arg.split()
+        section_args = arg.split()
         section_list = [(sct.course_id, sct.curr_section) for sct in sections]
         if((int(section_args[0]),int(section_args[1])) not in section_list):
             print('No such section exists.')
         else:
             stlist = []
-            for studentId in instructor_args[2:]:
+            for studentId in section_args[2:]:
                 stlist.append(int(studentId))
             for section in sections:
                 if section.course_id == int(section_args[0]) and section.curr_section == int(section_args[1]):
@@ -135,7 +151,7 @@ class TimeTableDemo(cmd.Cmd):
     def do_removeStudent(self, arg):
         'Remove students to a section with arguments: CourseId(int) Section(int) StudentId1(int) StudentId2(int)...'
         global sections
-        sections_args = arg.split()
+        section_args = arg.split()
         section_list = [(sct.course_id, sct.curr_section) for sct in sections]
         if((int(section_args[0]),int(section_args[1])) not in section_list):
             print('No such section exists.')
@@ -159,8 +175,14 @@ class TimeTableDemo(cmd.Cmd):
         global events
         event_args = arg.split()
         for event in events:
-            if event.event_id == int(event_args[0]):
+            if event.id == int(event_args[0]):
                 event.schedule(float(event_args[1]), int(event_args[2]))
+
+    def do_showEvents(self, arg):
+        'Show events with their sectionId length description dayname courseId'
+        global events
+        for event in events:
+            print('Section:',event.section,'- Length(Hrs):',event.length,'- Description:',event.description,'- Day Name',event.day,'- Course Id',event.course_id)
 
     def do_createTimeTable(self, arg):
         'Create a timetable with arguments: Day1(string) Day2(string) ... StartingDaySlot(float) EndingDaySlot(float) RoomId1(int) RoomId2(int) ...'
@@ -175,24 +197,49 @@ class TimeTableDemo(cmd.Cmd):
         new_timetable = TimeTable(days,(float(timetable_args[5]),float(timetable_args[6])),rooms)
         timetables.append(new_timetable)
 
+    def do_showTimeTable(self, arg):
+        'Show the TimeTable with all its elements (no argument)'
+        global timetables
+        if len(timetables) > 0:
+            print('Days: ',end='')
+            for day in timetables[0].days:
+                print(day,end=' ')
+            print()
+            print('Slots per day: ', timetables[0].slots_per_day)
+            print('Rooms: ', end='')
+            for room in timetables[0].rooms:
+                print(room,end=' ')
+            print()
+            print('Events:')
+            for event in timetables[0].event_list:
+                print('Section:',event.section,'- Length(Hrs):',event.length,'- Description:',event.description,'- Day Name',event.day,'- Course Id',event.course_id)
+
     def do_getConflicts(self, arg):
         'Get conflicts of a timetable: (no arguments)'
         if len(timetables) > 0:
-            timetables[0].getConflicts()
+            print(timetables[0].getConflicts())
 
     def do_addEvents(self, arg):
         'Add events to timetable with arguments: EventId1(int) EventId2(int)...'
         global timetables
         args = map(int,arg.split())
         if len(timetables) > 0:
-            timetable[0].addEvents([event for event in args])
+            events_to_add = []
+            for event in events:
+                if event.id in args:
+                    events_to_add.append(event)
+            timetables[0].addEvents(events_to_add)
 
     def do_removeEvents(self, arg):
         'Remove events from timetable with arguments: EventId1(int) EventId2(int)...'
         global timetables
         args = map(int,arg.split())
         if len(timetables) > 0:
-            timetable[0].removeEvents([event for event in args])
+            events_to_remove = []
+            for event in events:
+                if event.id in args:
+                    events_to_remove.append(event)
+            timetables[0].removeEvents(events_to_add)
 
     def do_assign(self, arg):
         'Assign the given timeslot to the event with arguments: TimeSlot(float) EventId(int)'
@@ -200,22 +247,16 @@ class TimeTableDemo(cmd.Cmd):
         global events
         args = arg.split()
         for event in events:
-            if event.event_id == int(args[1]):
+            if event.id == int(args[1]):
                 if len(timetables) > 0:
-                    timetable[0].assign(float(args[0]), event)
+                    timetables[0].assign(float(args[0]), event)
 
     def do_getEventsAt(self, arg):
         'Get events at timeslot with arguments: TimeSlot(float)'
         arg = float(arg)
         global timetables
         if len(timetables) > 0:
-            timetable[0].getEventsAt(arg)
-
-    def do_bye(self, arg):
-        'Exit'
-        print('Thank you for using TimeTable App')
-        bye()
-        return True
+            timetables[0].getEventsAt(arg)
 
 if __name__ == '__main__':
 
