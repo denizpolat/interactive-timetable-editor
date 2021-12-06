@@ -18,7 +18,7 @@ class Room():
         self.capacity = capacity
 
     def updateDescription(self, description):
-        self.desciption = desciption
+        self.description = description
 
 class RoomList():
     id = 0
